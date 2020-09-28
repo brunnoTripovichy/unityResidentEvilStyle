@@ -4,18 +4,47 @@ using UnityEngine;
 
 public class TankControls : MonoBehaviour
 {
-
+    public bool canMove;
     public GameObject player;
+    public GameObject currentCamera;
     public bool isMoving;
     public float horizontalMove;
     public float verticalMove;
     public bool isRunning;
+    public bool isCrouching;
     public bool backwardsCheck = false;
     public Rigidbody rb;
+    public PlayerStealthBehaviour psb;
+
+    private Animator animator;
+
+    void Start()
+    {
+        animator = player.GetComponent<Animator>();
+    }
 
     void Update()
     {
-        if (Input.GetKey(KeyCode.LeftShift))
+        float distance = 0;
+        distance = CheckIfCanMove(distance);
+    }
+
+    private float CheckIfCanMove(float distance)
+    {
+        if (canMove)
+        {
+            CheckIfIsCrouching();
+            CheckIfIsRunning();
+
+            distance = ProcessMovement(distance);
+        }
+
+        return distance;
+    }
+
+    private void CheckIfIsRunning()
+    {
+        if (Input.GetKey(KeyCode.LeftShift) && !isCrouching)
         {
             isRunning = true;
         }
@@ -23,46 +52,143 @@ public class TankControls : MonoBehaviour
         {
             isRunning = false;
         }
+    }
 
+    private void CheckIfIsCrouching()
+    {
+        if (Input.GetKey(KeyCode.RightControl))
+        {
+            isCrouching = true;
+        }
+        else
+        {
+            isCrouching = false;
+        }
+    }
+
+    private float ProcessMovement(float distance)
+    {
         if (Input.GetButton("Horizontal") || Input.GetButton("Vertical"))
         {
             isMoving = true;
             if (Input.GetButton("SKey"))
             {
-                backwardsCheck = true;
-                player.GetComponent<Animator>().Play("WalkBack");
+                ProcessMovingBackwards();
             }
             else
             {
-                backwardsCheck = false;
-                if (isRunning)
-                {
-                    player.GetComponent<Animator>().Play("Run");
-                }
-                else
-                {
-                    player.GetComponent<Animator>().Play("Walk");
-                }
+                ProcessMovingForwards();
             }
-            
-            if (isRunning && !backwardsCheck)
+
+            distance = ProcessMovementVelocity();
+
+        }
+        else
+        {
+            ProcessStopMoving();
+        }
+
+        return distance;
+    }
+
+    private float ProcessMovementVelocity()
+    {
+        float distance;
+        if (isRunning && !backwardsCheck)
+        {
+            verticalMove = Input.GetAxis("Vertical") * 14;
+        }
+        else
+        {
+            if (isCrouching)
             {
-                verticalMove = Input.GetAxis("Vertical") * 15.1f;
+                verticalMove = Input.GetAxis("Vertical") * 4;
             }
             else
             {
                 verticalMove = Input.GetAxis("Vertical") * 4.8f;
             }
-            horizontalMove = Input.GetAxis("Horizontal") * Time.deltaTime * 150;
-            player.transform.Rotate(0, horizontalMove, 0);
-            rb.velocity = transform.forward * verticalMove;
 
+        }
+
+        horizontalMove = Input.GetAxis("Horizontal") * Time.deltaTime * 150;
+        player.transform.Rotate(0, horizontalMove, 0);
+        rb.velocity = transform.forward * verticalMove;
+
+        distance = Vector3.Distance(player.transform.position, currentCamera.transform.position);
+        return distance;
+    }
+
+    private void ProcessMovingForwards()
+    {
+        backwardsCheck = false;
+        if (isRunning && !isCrouching)
+        {
+            ResetAnimations();
+            animator.SetBool("Running", true);
+        }
+        else if (isCrouching)
+        {
+            ResetAnimations();
+            animator.SetBool("Crouching", true);
         }
         else
         {
-            isMoving = false;
-            rb.velocity = Vector3.zero;
-            player.GetComponent<Animator>().Play("Idle");
+            ResetAnimations();
+            animator.SetBool("Walking", true);
         }
+    }
+
+    private void ProcessMovingBackwards()
+    {
+        backwardsCheck = true;
+        ResetAnimations();
+        if (backwardsCheck && !isCrouching)
+        {
+            animator.SetBool("WalkingBack", true);
+        }
+        else
+        {
+            animator.SetBool("CrouchingBack", true);
+        }
+    }
+
+    private void ProcessStopMoving()
+    {
+        isMoving = false;
+        rb.velocity = Vector3.zero;
+
+        if (isCrouching)
+        {
+            ResetAnimations();
+            animator.SetBool("CrouchingIdle", true);
+        }
+        else
+        {
+            ResetAnimations();
+        }
+    }
+
+    private void ResetAnimations()
+    {
+        animator.SetBool("Walking", false);
+        animator.SetBool("WalkingBack", false);
+        animator.SetBool("Running", false);
+        animator.SetBool("CrouchingIdle", false);
+        animator.SetBool("Crouching", false);
+        animator.SetBool("CrouchingBack", false);
+    }
+
+    public void StartStealthKill(GameObject target)
+    {
+        ResetAnimations();
+        canMove = false;
+        animator.SetTrigger("StealthKill");
+    }
+
+    public void FinishStealthKill()
+    {
+        canMove = true;
+        psb.isStrangling = false;
     }
 }

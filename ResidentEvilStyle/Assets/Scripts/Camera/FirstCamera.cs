@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class FirstCamera : MonoBehaviour
 {
-
     public GameObject on;
     public GameObject off;
     public bool cameraOn = false;
@@ -21,6 +20,7 @@ public class FirstCamera : MonoBehaviour
         {
             on.SetActive(true);
             off.SetActive(false);
+            other.gameObject.GetComponent<TankControls>().currentCamera = on;
         }
     }
 }
