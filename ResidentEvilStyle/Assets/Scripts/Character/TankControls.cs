@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class TankControls : MonoBehaviour
 {
+
+    [SerializeField] BodyCamMotionScript bodyCamMotionScript;
+
+    [SerializeField] float bodyCamBobSpeed, idleHeadBob;
+
     public bool canMove;
     public GameObject player;
     public GameObject currentCamera;
@@ -15,6 +20,8 @@ public class TankControls : MonoBehaviour
     public bool backwardsCheck = false;
     public Rigidbody rb;
     public PlayerStealthBehaviour psb;
+
+    private float movementCounter, idleCounter;
 
     private Animator animator;
 
@@ -167,6 +174,11 @@ public class TankControls : MonoBehaviour
         {
             ResetAnimations();
         }
+
+        //BodyCam Bob
+        //bodyCamMotionScript.HeadBob(idleHeadBob, idleHeadBob, idleCounter);
+        //idleCounter += Time.deltaTime;
+        //bodyCamMotionScript.IdleBob(bodyCamBobSpeed);
     }
 
     private void ResetAnimations()
