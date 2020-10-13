@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 95309628}
   - component: {fileID: 95309630}
   - component: {fileID: 95309629}
-  m_Layer: 0
+  - component: {fileID: 652408754}
+  m_Layer: 8
   m_Name: BodyCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,6 +88,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d90b76b541888184b846613f8b7487db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &652408754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 95309627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34a1dd7ac03f54949a451c3902adec45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  displacementMap: {fileID: 0}
+  Shader: {fileID: 4800000, guid: 7283e4240b08d644a9d2aea00788667f, type: 3}
+  intensity: 0.75
+  flipIntensity: 0.559
+  colorIntensity: 0.449
 --- !u!1 &909354628
 GameObject:
   m_ObjectHideFlags: 0
@@ -814,6 +832,7 @@ GameObject:
   - component: {fileID: 1374225951043197781}
   - component: {fileID: 1374225951043197777}
   - component: {fileID: 2013920834}
+  - component: {fileID: 1731080308}
   m_Layer: 0
   m_Name: MainPlayer
   m_TagString: Player
@@ -1040,7 +1059,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bodyCamScript: {fileID: 0}
-  player: {fileID: 2293267797195800806}
   inventory: {fileID: 0}
   isOpen: 0
 --- !u!114 &1374225951043197777
@@ -1067,6 +1085,22 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2293267797195800806}
   m_Enabled: 1
+--- !u!114 &1731080308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2293267797195800806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 754c3d230428ce542867a817fca29fa0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bodyCamScript: {fileID: 0}
+  pauseMenuScript: {fileID: 0}
+  tankControls: {fileID: 1374225951043197780}
+  buttonController: {fileID: 0}
 --- !u!1 &2457465902278740786
 GameObject:
   m_ObjectHideFlags: 0

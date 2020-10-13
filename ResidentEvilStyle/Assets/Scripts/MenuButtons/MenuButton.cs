@@ -6,8 +6,9 @@ using UnityEngine.SceneManagement;
 public class MenuButton : MonoBehaviour
 {
 
-	enum ActionButton { NewGame, LoadGame, Options, Quit };
+	enum ActionButton { NewGame, ResumeGame, LoadGame, Options, QuitToMenu, Quit };
 
+	[SerializeField] PauseMenuScript pauseMenu;
 	[SerializeField] MenuButtonController menuButtonController;
 	[SerializeField] Animator animator;
 	[SerializeField] AnimatorFunctions animatorFunctions;
@@ -21,7 +22,7 @@ public class MenuButton : MonoBehaviour
 		{
 			animator.SetBool("selected", true);
 
-			if (Input.GetAxis("Submit") == 1)
+			if (Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.Return))
 			{
 				animator.SetBool("pressed", true);
 			}
@@ -45,9 +46,16 @@ public class MenuButton : MonoBehaviour
 			case ActionButton.NewGame:
 				SceneManager.LoadScene("Area001");
 				break;
+			case ActionButton.ResumeGame:
+				StartCoroutine(pauseMenu.Resume());
+				break;
 			case ActionButton.LoadGame:
 				break;
 			case ActionButton.Options:
+				break;
+			case ActionButton.QuitToMenu:
+				Time.timeScale = 1f;
+				SceneManager.LoadScene("MainMenu");
 				break;
 			case ActionButton.Quit:
 				Application.Quit();

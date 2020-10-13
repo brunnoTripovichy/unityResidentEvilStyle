@@ -11,29 +11,44 @@ public class MenuButtonController : MonoBehaviour {
 	public AudioSource audioSource;
 
 	void Start () {
+		
 		audioSource = GetComponent<AudioSource>();
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		if(Input.GetAxis ("Vertical") != 0){
-			if(!keyDown){
-				if (Input.GetAxis ("Vertical") < 0) {
-					if(index < maxIndex){
+		if(Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
+		{
+			if(!keyDown)
+			{
+				if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S)) 
+				{
+					if(index < maxIndex)
+					{
 						index++;
-					}else{
+					
+					}
+					else
+					{
 						index = 0;
 					}
-				} else if(Input.GetAxis ("Vertical") > 0){
-					if(index > 0){
+				} 
+				else if(Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
+				{
+					if(index > 0)
+					{
 						index --; 
-					}else{
+					}
+					else
+					{
 						index = maxIndex;
 					}
 				}
 				keyDown = true;
 			}
-		}else{
+		}
+		else
+		{
 			keyDown = false;
 		}
 	}

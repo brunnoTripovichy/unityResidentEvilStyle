@@ -7,7 +7,6 @@ public class PlayerInventory: MonoBehaviour
 
     [SerializeField] BodyCamScript bodyCamScript;
 
-    public GameObject player;
     public GameObject inventory;
 
     public bool isOpen;
