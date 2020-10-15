@@ -12,8 +12,6 @@ public class PauseMenuScript : MonoBehaviour
 
     public static bool gameIsPaused = false;
 
-    private bool isOpen = false;
-
     // Update is called once per frame
     void Update()
     {
@@ -33,20 +31,20 @@ public class PauseMenuScript : MonoBehaviour
 
     public IEnumerator Resume()
     {
+        yield return new WaitForSecondsRealtime(0.5f);
         Time.timeScale = 1f;
-        bodyCamScript.bodyCam.SetActive(true);
-        tankControls.canMove = true;
-        gameIsPaused = false;
         pauseMenuScript.FadeOut();
-        yield return new WaitForSeconds(0.5f);
         pauseMenuScript.SetPauseMenuState(false);
+        bodyCamScript.bodyCam.SetActive(true);
+        //tankControls.canMove = true;
+        gameIsPaused = false;
     }
 
     void Pause()
     {
         buttonController.index = 0;
         bodyCamScript.bodyCam.SetActive(false);
-        tankControls.canMove = false;
+        //tankControls.canMove = false;
         pauseMenuScript.SetPauseMenuState(true);
         Time.timeScale = 0f;
         gameIsPaused = true;

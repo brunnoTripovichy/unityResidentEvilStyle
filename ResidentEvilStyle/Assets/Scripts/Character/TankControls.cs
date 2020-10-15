@@ -38,7 +38,7 @@ public class TankControls : MonoBehaviour
 
     private float CheckIfCanMove(float distance)
     {
-        if (canMove)
+        if (canMove && Time.timeScale > 0)
         {
             CheckIfIsCrouching();
             CheckIfIsRunning();
